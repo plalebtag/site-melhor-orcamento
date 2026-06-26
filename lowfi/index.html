@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Melhor Orçamento — Wireframe (baixa fidelidade)</title>
+<style>
+  /* ====== LOW-FIDELITY / BLACK & WHITE WIREFRAME ======
+     Sem cores, sem fontes especiais. Só estrutura e texto.
+     Onde houver imagem futura -> bloco "Imagem". */
+  * { box-sizing: border-box; }
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #000;
+    background: #fff;
+    margin: 0;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 20px; }
+  a { color: #000; }
+
+  /* blocos */
+  section { border-bottom: 1px solid #000; padding: 40px 0; }
+  .eyebrow {
+    font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    border: 1px solid #000; display: inline-block; padding: 4px 8px; margin-bottom: 16px;
+  }
+  h1 { font-size: 40px; line-height: 1.15; margin: 0 0 16px; }
+  h2 { font-size: 26px; margin: 0 0 8px; }
+  h3 { font-size: 18px; margin: 0 0 6px; }
+  .lead { font-size: 18px; max-width: 620px; }
+  .muted { color: #555; }
+
+  /* botões wireframe */
+  .btn {
+    display: inline-block; border: 1px solid #000; padding: 12px 20px;
+    text-decoration: none; margin: 8px 8px 8px 0; font-size: 14px;
+  }
+  .btn-solid { background: #000; color: #fff; }
+  .btn-lg { font-size: 16px; padding: 14px 26px; }
+
+  /* placeholder de imagem */
+  .img {
+    border: 1px solid #000; background:
+      repeating-linear-gradient(45deg, #fff, #fff 9px, #eee 9px, #eee 10px);
+    display: flex; align-items: center; justify-content: center;
+    min-height: 160px; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;
+  }
+
+  /* grids */
+  .row { display: flex; gap: 20px; flex-wrap: wrap; }
+  .col { flex: 1; min-width: 220px; }
+  .card { border: 1px solid #000; padding: 20px; }
+
+  /* header */
+  header { border-bottom: 2px solid #000; position: sticky; top: 0; background: #fff; z-index: 10; }
+  .nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; }
+  .logo { display:flex; align-items:center; gap:10px; font-weight: bold; letter-spacing: 1px; }
+  .logo .mark { width: 28px; height: 28px; border: 1px solid #000; display:flex; align-items:center; justify-content:center; font-size:11px;}
+  .navlinks a { margin-left: 18px; text-decoration: none; font-size: 14px; }
+
+  /* tabela "resultado exemplo" */
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  td, th { border: 1px solid #000; padding: 8px 10px; text-align: left; }
+  th { background: #f0f0f0; }
+  .num { text-align: right; }
+
+  ul.clean { list-style: none; padding: 0; margin: 0; }
+  ul.clean li { padding: 6px 0; border-bottom: 1px dashed #999; }
+  ul.clean li:before { content: "[ ] "; font-family: monospace; }
+  ul.check li:before { content: "✓ "; font-family: monospace; }
+
+  .pill { border:1px solid #000; padding:3px 9px; font-size:12px; display:inline-block; margin: 0 6px 6px 0; }
+
+  footer { padding: 30px 0; font-size: 13px; }
+  .note { font-size: 12px; color:#555; }
+  .pricecard { border: 1px solid #000; padding: 24px; }
+  .pricecard.featured { border-width: 3px; }
+
+  /* accordion FAQ */
+  .faq-item { border:1px solid #000; margin-top:12px; }
+  .faq-item > summary {
+    list-style: none; cursor: pointer; padding: 16px 20px;
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    font-weight: bold; font-size: 16px;
+  }
+  .faq-item > summary::-webkit-details-marker { display: none; }
+  .faq-item > summary::after {
+    content: "+"; font-weight: normal; font-size: 22px; line-height: 1;
+    width: 22px; text-align: center; transition: transform .2s ease;
+  }
+  .faq-item[open] > summary::after { content: "−"; }
+  .faq-item > .faq-body { padding: 0 20px 18px; border-top: 1px dashed #999; padding-top:14px; }
+  .faq-item > .faq-body > p { margin: 0; }
+  .center { text-align: center; }
+
+  /* ====== ANIMAÇÃO CONCEITO (hero) ======
+     Cena A: 3 orçamentos -> destaca o menor preço de cada item.
+     Cena B: plano de compra gerado, dividido por fornecedor. Loop. */
+  .mo { position: relative; min-height: 360px; }
+  .mo-scene { position: absolute; inset: 0; }
+  .mo-cap { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color:#555; margin-bottom: 10px; }
+  .mo-a { animation: moA 12s infinite; }
+  .mo-b { animation: moB 12s infinite; opacity: 0; }
+  /* preço sempre visível; só o destaque (fundo + contorno) anima */
+  .pick { display:inline-block; padding:1px 6px; outline:1px solid transparent; }
+  .p1 { animation: p1 12s infinite; }
+  .p2 { animation: p2 12s infinite; }
+  .p3 { animation: p3 12s infinite; }
+
+  /* "folhas de papel" dos orçamentos */
+  .paper { flex:1; border:1px solid #000; padding:10px 12px; background:#fff; font-size:13px; min-width:0; box-shadow: 3px 3px 0 #000; }
+  .paper-head { font-weight:bold; padding-bottom:6px; border-bottom:1px solid #000; margin-bottom:6px; font-size:12px; letter-spacing:1px; text-transform: uppercase; }
+  .paper-row { padding:6px 0; border-bottom:1px dashed #999; }
+  .paper-row:last-child { border-bottom:none; }
+  .mo-list { border:1px solid #000; padding:10px 12px; margin-bottom:10px; display:flex; justify-content:space-between; gap:10px; font-size:14px; opacity:0; }
+  .mo-total { border-top:1px dashed #999; padding-top:10px; font-size:14px; opacity:0; }
+  .bc1 { animation: bc1 12s infinite; }
+  .bc2 { animation: bc2 12s infinite; }
+  .bc3 { animation: bc3 12s infinite; }
+
+  @keyframes moA { 0%{opacity:0} 3%{opacity:1} 48%{opacity:1} 53%{opacity:0} 100%{opacity:0} }
+  @keyframes moB { 0%,49%{opacity:0} 55%{opacity:1} 96%{opacity:1} 100%{opacity:0} }
+  @keyframes p1 { 0%,8%{background:#fff; outline-color:transparent; transform:scale(1)} 11%{transform:scale(1.12)} 14%{background:#ddd; outline-color:#000; transform:scale(1)} 100%{background:#ddd; outline-color:#000} }
+  @keyframes p2 { 0%,16%{background:#fff; outline-color:transparent; transform:scale(1)} 19%{transform:scale(1.12)} 22%{background:#ddd; outline-color:#000; transform:scale(1)} 100%{background:#ddd; outline-color:#000} }
+  @keyframes p3 { 0%,24%{background:#fff; outline-color:transparent; transform:scale(1)} 27%{transform:scale(1.12)} 30%{background:#ddd; outline-color:#000; transform:scale(1)} 100%{background:#ddd; outline-color:#000} }
+  @keyframes bc1 { 0%,51%{opacity:0; transform:translateY(8px)} 57%{opacity:1; transform:none} 96%{opacity:1} 100%{opacity:0} }
+  @keyframes bc2 { 0%,55%{opacity:0; transform:translateY(8px)} 61%{opacity:1; transform:none} 96%{opacity:1} 100%{opacity:0} }
+  @keyframes bc3 { 0%,59%{opacity:0; transform:translateY(8px)} 65%{opacity:1; transform:none} 96%{opacity:1} 100%{opacity:0} }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mo-a { display:none; }
+    .mo-b { position:relative; opacity:1; animation:none; }
+    .pick { background:#ddd; outline-color:#000; animation:none; }
+    .mo-list, .mo-total { opacity:1; animation:none; }
+  }
+
+  /* mobile */
+  @media (max-width: 640px) {
+    h1 { font-size: 30px; }
+    h2 { font-size: 22px; }
+    .navlinks .hide-mobile { display: none; }
+    .navlinks a { margin-left: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =================== HEADER =================== -->
+<header>
+  <div class="wrap nav">
+    <div class="logo"><span class="mark">LOGO</span> MELHOR ORÇAMENTO</div>
+    <div class="navlinks">
+      <a href="#como" class="hide-mobile">Como funciona</a>
+      <a href="#case" class="hide-mobile">Resultados</a>
+      <a href="#planos" class="hide-mobile">Planos</a>
+      <a href="#">Entrar</a>
+      <a href="#" class="btn-solid" style="padding:10px 16px; text-decoration:none;">Começar grátis</a>
+    </div>
+  </div>
+</header>
+
+<!-- =================== HERO (enxuto, 1 CTA primário, prova social acima da dobra) =================== -->
+<section>
+  <div class="wrap">
+    <div class="row">
+      <div class="col" style="min-width:320px;">
+        <h1>Item mais barato por orçamento para você economizar em cada compra!</h1>
+        <p class="lead">
+          A IA compara seus orçamentos <strong>em minutos</strong> e entrega a lista de
+          compra pronta para cada fornecedor.
+        </p>
+        <div style="margin-top:8px;">
+          <a href="#" class="btn btn-solid btn-lg">Começar grátis →</a>
+          <a href="#planos" style="margin-left:14px; font-size:14px;">ou ver planos</a>
+        </div>
+        <p class="note">Grátis · sem cartão · primeiro orçamento pronto em minutos.</p>
+        <!-- faixa de confiança / prova social acima da dobra -->
+        <div style="margin-top:16px;">
+          <span class="pill">+ R$ 140 mil economizados em 1 compra</span>
+          <span class="pill">98% de assertividade no matching</span>
+          <span class="pill">Dias de trabalho → minutos</span>
+        </div>
+      </div>
+
+      <!-- card animado: 3 orçamentos -> plano de menor custo (loop) -->
+      <div class="col" style="min-width:320px;">
+        <div class="card">
+          <div class="mo">
+
+            <!-- CENA A: 3 folhas de orçamento, uma por fornecedor -->
+            <div class="mo-scene mo-a">
+              <div class="mo-cap">3 orçamentos recebidos — pegando o menor preço de cada item</div>
+              <div class="row" style="gap:12px;">
+                <div class="paper">
+                  <div class="paper-head">Orçamento · Forn. A</div>
+                  <div class="paper-row"><span class="pick p1">Cimento 50kg · R$ 38</span></div>
+                  <div class="paper-row">Vergalhão 10mm · R$ 24</div>
+                  <div class="paper-row">Tubo PVC 100mm · R$ 34</div>
+                </div>
+                <div class="paper">
+                  <div class="paper-head">Orçamento · Forn. B</div>
+                  <div class="paper-row">Cimento 50kg · R$ 41</div>
+                  <div class="paper-row">Vergalhão 10mm · R$ 27</div>
+                  <div class="paper-row"><span class="pick p3">Tubo PVC 100mm · R$ 29</span></div>
+                </div>
+                <div class="paper">
+                  <div class="paper-head">Orçamento · Forn. C</div>
+                  <div class="paper-row">Cimento 50kg · R$ 45</div>
+                  <div class="paper-row"><span class="pick p2">Vergalhão 10mm · R$ 21</span></div>
+                  <div class="paper-row">Tubo PVC 100mm · R$ 33</div>
+                </div>
+              </div>
+              <p class="note" style="margin-top:14px;">Valores ilustrativos.</p>
+            </div>
+
+            <!-- CENA B: plano de compra gerado -->
+            <div class="mo-scene mo-b">
+              <div class="mo-cap">Plano de compra gerado — menor custo por fornecedor</div>
+              <div class="mo-list bc1"><strong>Lista · Fornecedor A</strong><span>Cimento 50kg — R$ 38</span></div>
+              <div class="mo-list bc2"><strong>Lista · Fornecedor B</strong><span>Tubo PVC 100mm — R$ 29</span></div>
+              <div class="mo-list bc3"><strong>Lista · Fornecedor C</strong><span>Vergalhão 10mm — R$ 21</span></div>
+              <div class="mo-total bc3">
+                Total de menor custo: <strong>R$ 88</strong>
+                <span class="pill" style="margin:0;">economia ~8%</span><br>
+                <span class="note">vs. R$ 96 comprando tudo de um fornecedor só</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== BARRA DE PROVA SOCIAL =================== -->
+<section>
+  <div class="wrap center">
+    <p class="note">EMPRESAS QUE COMPRAM MELHOR COM A FERRAMENTA</p>
+    <div class="row" style="justify-content:center; gap:16px;">
+      <div class="img" style="min-width:120px; min-height:50px; flex:0 0 auto;">Logo</div>
+      <div class="img" style="min-width:120px; min-height:50px; flex:0 0 auto;">Logo</div>
+      <div class="img" style="min-width:120px; min-height:50px; flex:0 0 auto;">Logo</div>
+      <div class="img" style="min-width:120px; min-height:50px; flex:0 0 auto;">Logo</div>
+      <div class="img" style="min-width:120px; min-height:50px; flex:0 0 auto;">Logo</div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== VÍDEO DEMO (60–75s) =================== -->
+<section id="demo">
+  <div class="wrap center">
+    <span class="eyebrow">Veja em 60 segundos</span>
+    <h2>Do orçamento bagunçado à compra de menor custo</h2>
+    <p class="lead muted" style="margin:0 auto 18px;">Assista como a ferramenta compara tudo e devolve a lista pronta por fornecedor.</p>
+    <div class="img" style="min-height:360px; max-width:760px; margin:0 auto;">
+      Imagem / Vídeo — player de demonstração (▶ 0:60)
+    </div>
+    <div style="margin-top:18px;">
+      <a href="#" class="btn btn-solid btn-lg">Começar grátis →</a>
+    </div>
+  </div>
+</section>
+
+<!-- =================== MÉTRICAS =================== -->
+<section>
+  <div class="wrap row">
+    <div class="col card">
+      <h2>Minutos, não dias</h2>
+      <p>O que o seu time de compras leva horas (ou dias) para cruzar numa planilha fica pronto em <strong>minutos</strong>.</p>
+    </div>
+    <div class="col card">
+      <h2>Economia real em cada compra</h2>
+      <p>Empresas costumam economizar de 10% a 30% — e às vezes muito mais — comprando cada item do fornecedor mais barato, em vez de fechar tudo com um só.</p>
+    </div>
+    <div class="col card">
+      <h2>+ R$ 140 mil</h2>
+      <p>Economizados em uma compra por uma construtora. <a href="#case">Ver o case →</a></p>
+    </div>
+  </div>
+  <div class="wrap row" style="margin-top:20px;">
+    <div class="col card">▦ Menor custo item a item</div>
+    <div class="col card">▦ Frete embutido no custo total</div>
+    <div class="col card">▦ Lote mínimo de distribuidora</div>
+    <div class="col card">▦ Exporta PDF / CSV / XLSX</div>
+  </div>
+</section>
+
+<!-- =================== COMO FUNCIONA =================== -->
+<section id="como">
+  <div class="wrap">
+    <span class="eyebrow">Como funciona</span>
+    <h2>Do orçamento à lista de compra em 3 passos</h2>
+    <div class="row" style="margin-top:16px;">
+      <div class="col card">
+        <h3>01 · Suba os orçamentos</h3>
+        <p>Adicione os orçamentos de cada fornecedor (PDF, planilha ou foto) ou uma lista de compras.
+        A IA extrai os itens automaticamente.</p>
+        <div class="img" style="min-height:80px; margin-top:12px;">Imagem</div>
+      </div>
+      <div class="col card">
+        <h3>02 · Compare</h3>
+        <p>Agrupamos itens equivalentes entre fornecedores — mesmo escritos de formas diferentes —
+        com <strong>98% de assertividade</strong>.</p>
+        <div class="img" style="min-height:80px; margin-top:12px;">Imagem</div>
+      </div>
+      <div class="col card">
+        <h3>03 · Compre pelo menor custo</h3>
+        <p>Veja a economia real e receba <strong>uma lista de compras nova para cada fornecedor</strong> —
+        com exatamente o que comprar em cada um. É só enviar.</p>
+        <div class="img" style="min-height:80px; margin-top:12px;">Imagem</div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:20px;">
+      <strong>✎ Você no controle:</strong> quer ajustar algo? Edite qualquer item e a recomendação
+      se recalcula na hora — com a IA trabalhando junto.
+    </div>
+  </div>
+</section>
+
+<!-- =================== CASE CONSTRUTORA (movido para perto do topo) =================== -->
+<section id="case">
+  <div class="wrap">
+    <span class="eyebrow">Case real</span>
+    <div class="row">
+      <div class="col" style="min-width:300px;">
+        <h2>Construtora economizou + R$ 140 mil em uma única compra</h2>
+        <p class="lead">
+          Numa compra grande para uma obra de grande porte, uma construtora subiu os orçamentos de
+          vários fornecedores na ferramenta. Em vez de passar <strong>dias</strong> cruzando planilhas,
+          teve a comparação completa <strong>em minutos</strong>.
+        </p>
+        <p class="lead muted" style="margin-top:12px;">
+          O resultado: a compra mista — comprando cada item de quem estava mais barato — gerou uma
+          economia de <strong>mais de R$ 140 mil</strong> frente a fechar tudo com um fornecedor só.
+        </p>
+        <!-- depoimento nominal -->
+        <div class="card" style="margin-top:16px;">
+          <p class="lead">"Levávamos dias cruzando cotações numa planilha. Agora sai em minutos e ainda
+          achamos economia que passava batido. Numa compra grande, foram mais de R$ 140 mil."</p>
+          <p class="note">— [Nome], [Cargo de compras] · [Construtora]
+            &nbsp;·&nbsp; <span class="img" style="display:inline-flex; min-width:80px; min-height:28px;">Logo</span></p>
+        </div>
+        <ul class="clean check" style="margin-top:14px;">
+          <li>Comparação que levaria dias, feita em minutos</li>
+          <li>+ R$ 140.000 de economia em uma compra</li>
+          <li>Lista de compra separada e pronta por fornecedor</li>
+        </ul>
+      </div>
+      <div class="col" style="min-width:300px;">
+        <div class="img" style="min-height:240px;">Imagem</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== ENTREGA FINAL: LISTA POR FORNECEDOR =================== -->
+<section id="entrega">
+  <div class="wrap">
+    <h2 style="font-size:34px;">O que te entregamos?</h2>
+    <p class="lead">
+      <strong>Uma lista de compras pronta para cada fornecedor.</strong> Com a quantidade exata
+      do que comprar em cada um para chegar no menor custo total. Sem recortar planilha, sem
+      refazer pedido na mão — é só enviar.
+    </p>
+
+    <div class="row" style="margin-top:20px;">
+      <div class="col card">
+        <h3>Lista · Fornecedor A</h3>
+        <table>
+          <tr><th>Item</th><th class="num">Qtd</th></tr>
+          <tr><td>Cimento CP-II 50kg</td><td class="num">120</td></tr>
+          <tr><td>Vergalhão 10mm</td><td class="num">80</td></tr>
+          <tr><td>Brita 1 (m³)</td><td class="num">30</td></tr>
+        </table>
+        <p class="note">10 itens · R$ 8.100</p>
+      </div>
+      <div class="col card">
+        <h3>Lista · Fornecedor B</h3>
+        <table>
+          <tr><th>Item</th><th class="num">Qtd</th></tr>
+          <tr><td>Tubo PVC 100mm</td><td class="num">60</td></tr>
+          <tr><td>Conexões (kit)</td><td class="num">15</td></tr>
+        </table>
+        <p class="note">5 itens · R$ 3.940</p>
+      </div>
+      <div class="col card">
+        <h3>Lista · Fornecedor C</h3>
+        <table>
+          <tr><th>Item</th><th class="num">Qtd</th></tr>
+          <tr><td>Cabo flexível 2,5mm</td><td class="num">500</td></tr>
+          <tr><td>Disjuntor 20A</td><td class="num">40</td></tr>
+        </table>
+        <p class="note">9 itens · R$ 6.200</p>
+      </div>
+    </div>
+    <p class="note" style="margin-top:14px;">Exporta em PDF / CSV / XLSX — uma lista por fornecedor, prontas para enviar.</p>
+  </div>
+</section>
+
+<!-- =================== PARA QUEM É / SEGMENTOS (reduzido a 4 + "e outros") =================== -->
+<section id="segmentos">
+  <div class="wrap">
+    <span class="eyebrow">Para quem é</span>
+    <h2>Pensado para quem compra muito, de muitos fornecedores</h2>
+    <p class="lead muted">
+      Quanto mais itens, mais cotações e mais fornecedores envolvidos, maior a economia que a
+      comparação automática encontra.
+    </p>
+
+    <div class="row" style="margin-top:24px;">
+      <div class="col card">
+        <div class="img" style="min-height:80px; margin-bottom:12px;">Imagem</div>
+        <h3>Construtoras &amp; obras</h3>
+        <p>Cimento, aço, hidráulica e elétrica em várias distribuidoras — a cesta mais barata por
+        etapa da obra, já com frete e lote mínimo.</p>
+      </div>
+      <div class="col card">
+        <div class="img" style="min-height:80px; margin-bottom:12px;">Imagem</div>
+        <h3>Indústrias &amp; fábricas</h3>
+        <p>Compra recorrente de matéria-prima, insumos e MRO. Centenas de itens de almoxarifado
+        cotados todo mês.</p>
+      </div>
+      <div class="col card">
+        <div class="img" style="min-height:80px; margin-bottom:12px;">Imagem</div>
+        <h3>Restaurantes &amp; food service</h3>
+        <p>Insumos com preço que muda toda semana. Bate as cotações dos distribuidores e mostra
+        onde comprar cada item mais barato.</p>
+      </div>
+      <div class="col card">
+        <div class="img" style="min-height:80px; margin-bottom:12px;">Imagem</div>
+        <h3>Varejo &amp; revenda</h3>
+        <p>Lojas e mercados que compram para revender. A comparação por item protege a margem em
+        compras de alto volume.</p>
+      </div>
+    </div>
+
+    <p class="note" style="margin-top:16px;">
+      Também usado por clínicas e hospitais, facilities, agronegócio, escolas e hotéis. Se a sua
+      empresa compra <strong>vários itens, de vários fornecedores, com frequência</strong>, o Melhor
+      Orçamento serve.
+    </p>
+  </div>
+</section>
+
+<!-- =================== POR QUE B2B (diferencial) =================== -->
+<section>
+  <div class="wrap">
+    <span class="eyebrow">Por que compra de empresa é diferente</span>
+    <h2>Não é uma lista de supermercado</h2>
+    <div class="row" style="margin-top:16px;">
+      <div class="col card">
+        <h3>Mesmo item, nomes diferentes</h3>
+        <p>Cada fornecedor descreve o produto do seu jeito. A IA reconhece equivalências que uma
+        comparação manual não pega.</p>
+      </div>
+      <div class="col card">
+        <h3>Frete e lote mínimo contam</h3>
+        <p>O item mais barato nem sempre vence depois do frete e do pedido mínimo. Entra tudo no cálculo.</p>
+      </div>
+      <div class="col card">
+        <h3>Tempo é dinheiro</h3>
+        <p>Dezenas ou centenas de itens em vários fornecedores tornam a comparação manual lenta e cara.
+        Automatizar devolve horas do seu time — e ainda acha a economia que o olho não pega.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== FAQ (quebra de objeções) =================== -->
+<section id="faq">
+  <div class="wrap">
+    <span class="eyebrow">Perguntas frequentes</span>
+    <h2>Tira-dúvidas antes de começar</h2>
+
+    <details class="faq-item" open>
+      <summary>Meus orçamentos ficam seguros?</summary>
+      <div class="faq-body">
+        <p>Seus dados são privados e usados apenas para gerar a sua comparação. Não compartilhamos
+        com fornecedores nem com terceiros.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>E se a IA agrupar um item errado?</summary>
+      <div class="faq-body">
+        <p>Você revisa e edita qualquer item — a recomendação recalcula na hora. O matching tem
+        98% de assertividade e você fica no controle.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Que formatos posso subir?</summary>
+      <div class="faq-body">
+        <p>PDF, planilha (CSV/XLSX) ou foto do orçamento. A IA extrai os itens automaticamente.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Preciso de cartão para testar?</summary>
+      <div class="faq-body">
+        <p>Não. O trial é grátis, sem cartão: 1 projeto, 2 fornecedores, 2 orçamentos.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- =================== PLANOS (com âncora de ROI) =================== -->
+<section id="planos">
+  <div class="wrap">
+    <div class="center" style="margin-bottom:24px;">
+      <span class="eyebrow">Planos</span>
+    </div>
+    <div class="row">
+      <div class="col pricecard">
+        <h3>TRIAL</h3>
+        <div style="font-size:30px; font-weight:bold;">Grátis</div>
+        <p class="muted">Sem cartão. Para experimentar.</p>
+        <ul class="clean check">
+          <li>1 projeto</li>
+          <li>2 fornecedores</li>
+          <li>2 orçamentos (até 800 KB cada)</li>
+        </ul>
+        <a href="#" class="btn" style="display:block; text-align:center; margin-top:16px;">Começar grátis</a>
+      </div>
+
+      <div class="col pricecard featured">
+        <span class="pill">COMPLETO</span>
+        <h3 style="margin-top:10px;">MELHOR ORÇAMENTO FULL</h3>
+        <div style="font-size:30px; font-weight:bold;">R$ 250 <span style="font-size:14px; font-weight:normal;">/mês</span></div>
+        <p class="muted"><strong>Se paga na primeira compra.</strong> Uma economia de 1% num pedido de R$ 25 mil já cobre o mês.</p>
+        <ul class="clean check">
+          <li>Projetos, fornecedores e orçamentos ilimitados</li>
+          <li>Arquivos de até 10 MB</li>
+          <li>Matching com IA + lista por fornecedor</li>
+          <li>Exportação PDF / CSV / XLSX + notificação por email</li>
+        </ul>
+        <a href="#" class="btn btn-solid" style="display:block; text-align:center; margin-top:16px;">Criar conta</a>
+        <p class="note center">Cancele quando quiser.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== CTA FINAL =================== -->
+<section>
+  <div class="wrap center">
+    <h2>Pare de cotar na mão. Economize tempo e dinheiro.</h2>
+    <p class="lead muted" style="margin:0 auto;">Suba seus orçamentos e, em minutos, receba a economia e a lista de compra pronta para cada fornecedor.</p>
+    <div style="margin-top:16px;">
+      <a href="#" class="btn btn-solid btn-lg">Começar grátis →</a>
+    </div>
+    <p class="note">Grátis · sem cartão · cancele quando quiser.</p>
+  </div>
+</section>
+
+<!-- =================== FOOTER =================== -->
+<footer>
+  <div class="wrap row" style="align-items:center; justify-content:space-between;">
+    <div class="logo"><span class="mark">LOGO</span> MELHOR ORÇAMENTO</div>
+    <div>
+      <a href="#">Política de Privacidade</a> ·
+      <a href="#">Termos de Uso</a>
+    </div>
+    <div class="note">© 2026 Melhor Orçamento</div>
+  </div>
+</footer>
+
+</body>
+</html>
