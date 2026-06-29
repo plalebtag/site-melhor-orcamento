@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Melhor Orçamento — Item mais barato por orçamento, em cada compra</title>
+<meta name="description" content="A IA de compras B2B que compara orçamentos em minutos e entrega a lista de compra pronta para cada fornecedor. Economize milhares em cada compra.">
+<link rel="icon" href="../assets/symbol.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     MELHOR ORÇAMENTO — High-fi (v1)
+     Brand palette + Inter + polish
+     ============================================================ */
+  :root {
+    --brand: #03423C;
+    --brand-700: #052E2A;
+    --brand-bright: #00786F;
+    --brand-bright-100: #DFF1EF;
+    --brand-100: #E6EEED;
+    --brand-50: #F1F6F5;
+    --blue: #0675EF;
+    --blue-100: #E4F0FE;
+    --green: #00D540;
+    --green-700: #00A832;
+    --green-100: #E0FAEA;
+    --gold: #CC8E06;
+    --gold-100: #FBF1D9;
+    --ink: #0A2B28;
+    --ink-2: #5A6C6A;
+    --ink-3: #8A9997;
+    --surface: #F5F5F5;
+    --surface-2: #FAFAF8;
+    --border: #E4E9E7;
+    --border-strong: #C9D2D0;
+    --white: #FFFFFF;
+    --radius: 14px;
+    --radius-lg: 20px;
+    --radius-pill: 999px;
+    --shadow-sm: 0 1px 2px rgba(3,66,60,.06);
+    --shadow-md: 0 6px 18px rgba(3,66,60,.08), 0 1px 2px rgba(3,66,60,.06);
+    --shadow-lg: 0 24px 60px rgba(3,66,60,.14), 0 2px 6px rgba(3,66,60,.06);
+    --ease: cubic-bezier(.2,.7,.2,1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    font-feature-settings: 'cv11','ss01','ss03';
+    color: var(--ink);
+    background: var(--white);
+    margin: 0;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  img, svg { display: block; max-width: 100%; }
+  a { color: var(--brand); text-decoration: none; transition: color .2s var(--ease); }
+  a:hover { color: var(--brand-bright); }
+
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+  section { padding: 88px 0; }
+  section.tight { padding: 56px 0; }
+  section.surface { background: var(--surface-2); }
+
+  /* Tipografia */
+  h1, h2, h3 { font-family: inherit; color: var(--ink); margin: 0; letter-spacing: -.02em; }
+  h1 { font-size: clamp(36px, 4.6vw, 56px); font-weight: 800; line-height: 1.05; letter-spacing: -.03em; }
+  h2 { font-size: clamp(28px, 3.2vw, 40px); font-weight: 700; line-height: 1.15; }
+  h3 { font-size: 18px; font-weight: 600; }
+  p { margin: 0; }
+  .lead { font-size: 18px; color: var(--ink-2); max-width: 640px; }
+  .muted { color: var(--ink-2); }
+  .center { text-align: center; }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--brand); background: var(--brand-100);
+    padding: 6px 12px; border-radius: var(--radius-pill);
+  }
+  .eyebrow::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--green);
+  }
+
+  /* Botões */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 20px; border-radius: var(--radius-pill); border: 1px solid var(--border);
+    font-size: 14px; font-weight: 600; color: var(--ink);
+    background: var(--white); cursor: pointer; text-decoration: none;
+    transition: transform .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease), color .2s var(--ease);
+  }
+  .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); color: var(--ink); }
+  .btn-solid {
+    background: var(--brand-bright); color: var(--white); border-color: var(--brand-bright);
+  }
+  .btn-solid:hover { background: var(--brand); color: var(--white); border-color: var(--brand); box-shadow: var(--shadow-md); }
+  .btn-lg { padding: 16px 28px; font-size: 16px; }
+  .btn-ghost { background: transparent; border-color: transparent; color: var(--brand); }
+  .btn-ghost:hover { background: var(--brand-50); color: var(--brand); }
+
+  /* Pills / badges */
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 12px; border-radius: var(--radius-pill);
+    font-size: 12px; font-weight: 600;
+    background: var(--surface); color: var(--ink-2); border: 1px solid var(--border);
+  }
+  .pill.green { background: var(--green-100); color: var(--green-700); border-color: transparent; }
+  .pill.blue { background: var(--blue-100); color: var(--blue); border-color: transparent; }
+  .pill.gold { background: var(--gold-100); color: var(--gold); border-color: transparent; }
+  .pill.brand { background: var(--brand-100); color: var(--brand); border-color: transparent; }
+  .pill .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+  /* Cards */
+  .card {
+    background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 28px; transition: transform .25s var(--ease), box-shadow .25s var(--ease), border-color .25s var(--ease);
+  }
+  .card.hover:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--border-strong); }
+
+  .row { display: flex; gap: 24px; flex-wrap: wrap; }
+  .col { flex: 1; min-width: 240px; }
+
+  /* ========== HEADER ========== */
+  header {
+    position: sticky; top: 0; z-index: 50;
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    transition: background .25s var(--ease), border-color .25s var(--ease), backdrop-filter .25s var(--ease);
+  }
+  header.scrolled {
+    background: rgba(255,255,255,.85);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
+            backdrop-filter: saturate(180%) blur(12px);
+    border-bottom-color: var(--border);
+  }
+  .nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; }
+  .logo img { height: 48px; }
+  .navlinks { display: flex; align-items: center; gap: 26px; }
+  .navlinks a { font-size: 14px; font-weight: 500; color: var(--ink); }
+  .navlinks a.btn-solid { color: var(--white); }
+  .navlinks a:not(.btn):hover { color: var(--brand-bright); }
+
+  /* ========== HERO ========== */
+  .hero {
+    position: relative; overflow: hidden;
+    background:
+      radial-gradient(800px 380px at 0% 0%, rgba(0,213,64,.06), transparent 60%),
+      radial-gradient(700px 360px at 100% 100%, rgba(6,117,239,.05), transparent 60%),
+      linear-gradient(180deg, var(--surface-2), var(--white));
+    margin-top: -76px; /* sobe pra cobrir a área do header */
+    padding-top: 172px; padding-bottom: 88px; /* 96 original + 76 do header */
+  }
+  .hero .wrap { position: relative; }
+  .hero h1 strong { color: var(--brand); }
+  .hero .hero-lead { font-size: 20px; color: var(--ink-2); margin-top: 18px; max-width: 540px; line-height: 1.5; }
+  .hero .cta-row { margin-top: 30px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .hero .trust-row { margin-top: 22px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .hero .note { font-size: 13px; color: var(--ink-3); margin-top: 12px; }
+
+  /* ========== HERO 3D PAPER SCENE ========== */
+  .hero-scene {
+    position: relative; width: 100%; max-width: 540px; height: 560px;
+    margin: 0 auto;
+    perspective: 1400px; perspective-origin: 50% 38%;
+  }
+  .hero-stage {
+    position: absolute; inset: 0;
+    transform-style: preserve-3d;
+    transform: rotateX(var(--ry,0deg)) rotateY(var(--rx,0deg));
+    will-change: transform;
+  }
+
+  /* Partículas mágicas atrás */
+  .particles { position: absolute; inset: -40px; pointer-events: none; transform: translateZ(-220px); }
+  .particle {
+    position: absolute; width: 5px; height: 5px; border-radius: 50%;
+    opacity: 0; animation: float 11s infinite ease-in-out;
+  }
+  .particle.b { background: var(--blue); box-shadow: 0 0 14px rgba(6,117,239,.6); }
+  .particle.g { background: var(--green); box-shadow: 0 0 14px rgba(0,213,64,.6); }
+  .particle.y { background: var(--gold); box-shadow: 0 0 14px rgba(204,142,6,.6); }
+  .particle.sm { width: 3px; height: 3px; }
+  .particle.lg { width: 8px; height: 8px; }
+  @keyframes float {
+    0%,100% { opacity: 0; transform: translate3d(0,0,0) scale(.6); }
+    20% { opacity: .8; }
+    50% { opacity: 1; transform: translate3d(var(--mx,30px), var(--my,-50px), var(--mz,80px)) scale(1); }
+    80% { opacity: .5; }
+  }
+
+  /* Linhas decorativas */
+  .deco { position: absolute; inset: 0; pointer-events: none; transform: translateZ(-40px); opacity: .35; overflow: visible; }
+  .deco path { stroke-dasharray: 8 10; animation: dash 10s linear infinite; }
+  @keyframes dash { to { stroke-dashoffset: -200; } }
+
+  /* ===== Folhas de papel 3D ===== */
+  .p3d {
+    position: absolute;
+    width: 220px; height: 290px;
+    background: linear-gradient(180deg, #ffffff 0%, #fbfbfa 100%);
+    border-radius: 16px;
+    padding: 22px 18px 18px;
+    box-shadow:
+      0 32px 56px -22px rgba(3,66,60,.32),
+      0 12px 24px -12px rgba(3,66,60,.18),
+      inset 0 1px 0 rgba(255,255,255,.9);
+    font-size: 13px; transform-style: preserve-3d; opacity: 0;
+  }
+  .p3d::before {
+    content: ""; position: absolute; left: 0; right: 0; top: 0; height: 7px;
+    border-radius: 16px 16px 0 0;
+  }
+  .p3d::after {
+    content: ""; position: absolute; top: 18px; right: 18px;
+    width: 22px; height: 22px;
+    background: linear-gradient(135deg, transparent 50%, rgba(3,66,60,.07) 50%);
+    border-bottom-left-radius: 4px;
+  }
+  .p3d.pa::before { background: var(--blue); }
+  .p3d.pb::before { background: var(--green); }
+  .p3d.pc::before { background: var(--gold); }
+  .p3d.pf::before { background: linear-gradient(90deg, var(--blue), var(--green), var(--gold)); height: 8px; }
+
+  .p3d-head {
+    font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--ink-2); padding-bottom: 10px;
+    border-bottom: 1px solid var(--border); margin-bottom: 4px;
+  }
+  .p3d-row {
+    padding: 8px 0; border-bottom: 1px dashed var(--border);
+    color: var(--ink); font-size: 12.5px;
+    border-radius: 6px;
+  }
+  .p3d-row:last-child { border-bottom: none; }
+
+  /* Linhas que ganham highlight em sequência */
+  .ra { animation: rowA 18s infinite ease-in-out; }
+  .rb { animation: rowB 18s infinite ease-in-out; }
+  .rc { animation: rowC 18s infinite ease-in-out; }
+  @keyframes rowA {
+    0%,28% { background: transparent; box-shadow: none; color: var(--ink); transform: scale(1); padding-left: 0; padding-right: 0; }
+    30% { transform: scale(1.06); }
+    33% { background: rgba(0,213,64,.14); box-shadow: 0 0 0 2px var(--green) inset; color: var(--green-700); transform: scale(1); padding-left: 8px; padding-right: 8px; }
+    52% { background: rgba(0,213,64,.14); box-shadow: 0 0 0 2px var(--green) inset; color: var(--green-700); }
+    58%,100% { background: transparent; box-shadow: none; color: var(--ink-3); }
+  }
+  @keyframes rowB {
+    0%,35% { background: transparent; box-shadow: none; color: var(--ink); transform: scale(1); padding-left: 0; padding-right: 0; }
+    37% { transform: scale(1.06); }
+    40% { background: rgba(0,213,64,.14); box-shadow: 0 0 0 2px var(--green) inset; color: var(--green-700); transform: scale(1); padding-left: 8px; padding-right: 8px; }
+    52% { background: rgba(0,213,64,.14); box-shadow: 0 0 0 2px var(--green) inset; color: var(--green-700); }
+    58%,100% { background: transparent; box-shadow: none; color: var(--ink-3); }
+  }
+  @keyframes rowC {
+    0%,42% { background: transparent; box-shadow: none; color: var(--ink); transform: scale(1); padding-left: 0; padding-right: 0; }
+    44% { transform: scale(1.06); }
+    47% { background: rgba(0,213,64,.14); box-shadow: 0 0 0 2px var(--green) inset; color: var(--green-700); transform: scale(1); padding-left: 8px; padding-right: 8px; }
+    52% { background: rgba(0,213,64,.14); box-shadow: 0 0 0 2px var(--green) inset; color: var(--green-700); }
+    58%,100% { background: transparent; box-shadow: none; color: var(--ink-3); }
+  }
+
+  /* Posições e entradas das folhas (fan layout) */
+  .p-a { left: 4%;  top: 90px; animation: enterA 18s infinite ease-in-out; }
+  .p-b { left: 28%; top: 120px; animation: enterB 18s infinite ease-in-out; }
+  .p-c { left: 52%; top: 90px;  animation: enterC 18s infinite ease-in-out; }
+  .p-f { left: 50%; top: 40px;  margin-left: -135px; width: 270px; height: 380px; animation: enterF 18s infinite ease-in-out; }
+
+  @keyframes enterA {
+    0% { opacity: 0; transform: translate3d(-40px, 60px, -120px) rotate(-22deg); }
+    8% { opacity: 1; transform: translate3d(0,0,-60px) rotate(-10deg); }
+    52% { opacity: 1; transform: translate3d(0,0,-60px) rotate(-10deg); }
+    62% { opacity: .8; transform: translate3d(-40px, 50px, -220px) rotate(-16deg) scale(.85); }
+    100% { opacity: .8; transform: translate3d(-40px, 50px, -220px) rotate(-16deg) scale(.85); }
+  }
+  @keyframes enterB {
+    0%,8% { opacity: 0; transform: translate3d(0, 60px, -120px) rotate(-10deg); }
+    16% { opacity: 1; transform: translate3d(0,0,-30px) rotate(-2deg); }
+    52% { opacity: 1; transform: translate3d(0,0,-30px) rotate(-2deg); }
+    62% { opacity: .8; transform: translate3d(0, 50px, -220px) rotate(-5deg) scale(.85); }
+    100% { opacity: .8; transform: translate3d(0, 50px, -220px) rotate(-5deg) scale(.85); }
+  }
+  @keyframes enterC {
+    0%,16% { opacity: 0; transform: translate3d(40px, 60px, -120px) rotate(0deg); }
+    24% { opacity: 1; transform: translate3d(0,0,0) rotate(8deg); }
+    52% { opacity: 1; transform: translate3d(0,0,0) rotate(8deg); }
+    62% { opacity: .8; transform: translate3d(40px, 50px, -220px) rotate(12deg) scale(.85); }
+    100% { opacity: .8; transform: translate3d(40px, 50px, -220px) rotate(12deg) scale(.85); }
+  }
+  @keyframes enterF {
+    0%,60% { opacity: 0; transform: translate3d(0, 60px, 60px) scale(.85); }
+    68% { opacity: 1; transform: translate3d(0,0,120px) scale(1); }
+    100% { opacity: 1; transform: translate3d(0,0,120px) scale(1); }
+  }
+
+  /* ===== Chips flutuantes ===== */
+  .chip {
+    position: absolute; left: 50%; top: 50%;
+    background: #fff; border: 1px solid var(--border);
+    border-radius: 10px; padding: 9px 13px;
+    font-size: 12px; font-weight: 600; white-space: nowrap;
+    box-shadow:
+      0 18px 36px -10px rgba(3,66,60,.45),
+      0 6px 14px -6px rgba(3,66,60,.2);
+    opacity: 0; transform-style: preserve-3d;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .chip::before { content: ""; width: 8px; height: 8px; border-radius: 50%; }
+  .chip.ca::before { background: var(--blue); }
+  .chip.cb::before { background: var(--green); }
+  .chip.cc::before { background: var(--gold); }
+  .chip.ca { animation: chipA 18s infinite cubic-bezier(.22,.7,.25,1); }
+  .chip.cb { animation: chipB 18s infinite cubic-bezier(.22,.7,.25,1); }
+  .chip.cc { animation: chipC 18s infinite cubic-bezier(.22,.7,.25,1); }
+
+  @keyframes chipA {
+    0%,32% { opacity: 0; transform: translate(-50%,-50%) translate3d(-170px, 40px, -50px) scale(.6); }
+    36% { opacity: 1; transform: translate(-50%,-50%) translate3d(-190px, -50px, 110px) scale(1) rotate(-4deg); }
+    55% { opacity: 1; transform: translate(-50%,-50%) translate3d(-190px, -90px, 160px) rotate(-2deg); }
+    63% { opacity: 1; transform: translate(-50%,-50%) translate3d(-80px, -30px, 130px) rotate(-1deg); }
+    68% { opacity: 1; transform: translate(-50%,-50%) translate3d(-80px, 0px, 110px); }
+    72% { opacity: 0; transform: translate(-50%,-50%) translate3d(-80px, 10px, 100px) scale(.8); }
+    100% { opacity: 0; }
+  }
+  @keyframes chipB {
+    0%,39% { opacity: 0; transform: translate(-50%,-50%) translate3d(-20px, 60px, -30px) scale(.6); }
+    43% { opacity: 1; transform: translate(-50%,-50%) translate3d(0, -60px, 110px) scale(1) rotate(2deg); }
+    55% { opacity: 1; transform: translate(-50%,-50%) translate3d(0, -100px, 160px) rotate(4deg); }
+    63% { opacity: 1; transform: translate(-50%,-50%) translate3d(0, -20px, 130px) rotate(0deg); }
+    68% { opacity: 1; transform: translate(-50%,-50%) translate3d(0, 20px, 110px); }
+    72% { opacity: 0; transform: translate(-50%,-50%) translate3d(0, 30px, 100px) scale(.8); }
+    100% { opacity: 0; }
+  }
+  @keyframes chipC {
+    0%,46% { opacity: 0; transform: translate(-50%,-50%) translate3d(150px, 80px, -50px) scale(.6); }
+    50% { opacity: 1; transform: translate(-50%,-50%) translate3d(180px, -60px, 110px) scale(1) rotate(5deg); }
+    58% { opacity: 1; transform: translate(-50%,-50%) translate3d(180px, -100px, 160px) rotate(6deg); }
+    63% { opacity: 1; transform: translate(-50%,-50%) translate3d(80px, -20px, 130px) rotate(2deg); }
+    68% { opacity: 1; transform: translate(-50%,-50%) translate3d(80px, 30px, 110px); }
+    72% { opacity: 0; transform: translate(-50%,-50%) translate3d(80px, 40px, 100px) scale(.8); }
+    100% { opacity: 0; }
+  }
+
+  /* ===== Conteúdo da folha final ===== */
+  .pf-head {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--brand); padding-bottom: 10px; border-bottom: 1px solid var(--border); margin-bottom: 8px;
+  }
+  .pf-eco {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 999px;
+    background: var(--green-100); color: var(--green-700);
+    font-size: 10px; font-weight: 700; letter-spacing: .04em;
+  }
+  .pf-eco::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+  .pf-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 0; font-size: 12.5px; border-bottom: 1px dashed var(--border);
+    opacity: 0;
+  }
+  .pf-item .l { display: flex; align-items: center; gap: 8px; }
+  .pf-item .l::before { content: ""; width: 9px; height: 9px; border-radius: 50%; }
+  .pf-item.fa .l::before { background: var(--blue); }
+  .pf-item.fb .l::before { background: var(--green); }
+  .pf-item.fc .l::before { background: var(--gold); }
+  .pf-item .pr { font-weight: 700; color: var(--green-700); font-variant-numeric: tabular-nums; }
+  .pf-item.fa { animation: pfi 18s infinite ease-out; animation-delay: 0s; }
+  .pf-item.fb { animation: pfi 18s infinite ease-out; animation-delay: .15s; }
+  .pf-item.fc { animation: pfi 18s infinite ease-out; animation-delay: .3s; }
+  @keyframes pfi {
+    0%,67% { opacity: 0; transform: translateY(14px) scale(.95); }
+    71% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  .pf-savings {
+    margin-top: 12px; padding-top: 14px;
+    border-top: 1px solid var(--border);
+    opacity: 0; animation: pfs 18s infinite ease-out;
+  }
+  @keyframes pfs {
+    0%,74% { opacity: 0; transform: translateY(12px); }
+    80% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 1; }
+  }
+  .pf-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 11px; color: var(--ink-3); }
+  .pf-row .before { text-decoration: line-through; font-variant-numeric: tabular-nums; }
+  .pf-total {
+    margin-top: 6px;
+    font-size: 32px; font-weight: 800; color: var(--brand); letter-spacing: -.02em; line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .pf-econ {
+    display: inline-flex; align-items: center; gap: 6px; margin-top: 12px;
+    padding: 7px 14px; border-radius: 999px;
+    background: var(--green); color: white;
+    font-size: 12px; font-weight: 800; letter-spacing: .02em;
+    box-shadow: 0 8px 20px -6px rgba(0,213,64,.6);
+  }
+  .pf-econ::before { content: "↓"; font-weight: 900; }
+
+  /* Mobile: reduz cena */
+  @media (max-width: 880px) {
+    .hero-scene { max-width: 460px; height: 500px; }
+  }
+  @media (max-width: 540px) {
+    .hero-scene { transform: scale(.85); transform-origin: top center; height: 460px; }
+  }
+
+  /* Reduced motion: mostra direto o resultado final */
+  @media (prefers-reduced-motion: reduce) {
+    .p3d, .chip, .pf-item, .pf-savings { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .particle, .deco path { animation: none !important; opacity: 0 !important; }
+    .p-a, .p-b, .p-c, .chip { display: none; }
+    .p-f { position: relative !important; left: 0 !important; margin-left: 0 !important; top: 0 !important; }
+    .hero-stage { transform: none !important; }
+  }
+
+  /* Grid 2 colunas no hero */
+  .hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center; }
+  @media (max-width: 880px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  }
+
+  /* ========== LOGOS / PROVA SOCIAL ========== */
+  .logos { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 56px; margin-top: 22px; }
+  .logo-slot {
+    height: 64px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600; letter-spacing: .14em; color: var(--ink-3);
+    filter: grayscale(100%); opacity: .75;
+    transition: filter .25s var(--ease), opacity .25s var(--ease);
+  }
+  .logo-slot:hover { filter: grayscale(0%); opacity: 1; }
+  .logo-slot img { max-height: 56px; max-width: 200px; object-fit: contain; }
+
+  /* ========== MÉTRICAS ========== */
+  .metric { padding: 32px; border-radius: var(--radius-lg); background: var(--white); border: 1px solid var(--border); height: 100%; }
+  .metric h3.big { font-size: 32px; font-weight: 800; color: var(--brand); letter-spacing: -.02em; margin-bottom: 8px; }
+  .metric.accent { background: linear-gradient(180deg, var(--brand) 0%, var(--brand-700) 100%); color: var(--white); border-color: transparent; }
+  .metric.accent h3.big, .metric.accent p { color: var(--white); }
+  .metric.accent a { color: var(--green); font-weight: 600; }
+  .feat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 24px; }
+  .feat {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 16px; border-radius: var(--radius); background: var(--white); border: 1px solid var(--border);
+    font-size: 14px; font-weight: 500;
+  }
+  .feat svg { flex-shrink: 0; color: var(--brand); }
+  @media (max-width: 800px) { .feat-row { grid-template-columns: repeat(2, 1fr); } }
+
+  /* ========== COMO FUNCIONA ========== */
+  .step {
+    padding: 100px 30px 32px;
+    border-radius: var(--radius-lg); background: var(--white); border: 1px solid var(--border);
+    height: 100%; position: relative; overflow: visible;
+    transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+  }
+  .step:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+  .step .num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--brand-100); color: var(--brand); font-weight: 700; font-size: 13px;
+    margin-bottom: 14px;
+  }
+  .step .icon-box {
+    position: absolute; top: -60px; left: 50%;
+    transform: translateX(-50%);
+    width: 140px; height: 140px;
+    background: transparent; padding: 0; margin: 0;
+    display: flex; align-items: center; justify-content: center;
+    pointer-events: none;
+    transition: transform .4s var(--ease);
+  }
+  .step .icon-box::before {
+    content: ""; position: absolute; inset: 12%;
+    background: radial-gradient(circle, rgba(0,213,64,0.22) 0%, rgba(6,117,239,0.10) 45%, transparent 70%);
+    border-radius: 50%; filter: blur(12px);
+  }
+  .step .icon-box svg {
+    width: 100%; height: 100%; display: block; position: relative;
+    filter: drop-shadow(0 16px 24px rgba(3,66,60,0.25));
+  }
+  .step:hover .icon-box { transform: translateX(-50%) translateY(-8px) scale(1.04); }
+  .control-note {
+    margin-top: 22px; padding: 18px 22px; border-radius: var(--radius); background: var(--brand-50);
+    border-left: 3px solid var(--brand); color: var(--ink); font-size: 15px;
+  }
+
+  /* ========== CASE ========== */
+  .case-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 48px; align-items: stretch; }
+  @media (max-width: 880px) { .case-grid { grid-template-columns: 1fr; } }
+  .quote {
+    margin-top: 22px; padding: 22px 24px; border-radius: var(--radius); background: var(--white);
+    border: 1px solid var(--border); position: relative;
+  }
+  .quote::before {
+    content: "\201C"; position: absolute; top: -14px; left: 18px;
+    width: 36px; height: 36px; background: var(--brand); color: var(--white);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 28px; line-height: 1; font-family: Georgia, serif;
+  }
+  .quote p { font-size: 17px; color: var(--ink); line-height: 1.55; margin-bottom: 12px; }
+  .quote .author { font-size: 13px; color: var(--ink-2); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .check-list { list-style: none; padding: 0; margin: 22px 0 0; }
+  .check-list li {
+    padding: 8px 0; display: flex; align-items: flex-start; gap: 10px;
+    font-size: 15px; color: var(--ink);
+  }
+  .check-list li::before {
+    content: ""; flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%;
+    background: var(--green); position: relative; margin-top: 2px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>");
+    background-size: 14px; background-position: center; background-repeat: no-repeat;
+  }
+  .case-img {
+    border-radius: var(--radius-lg); background:
+      linear-gradient(135deg, var(--brand-50) 0%, var(--green-100) 100%);
+    border: 1px solid var(--border);
+    min-height: 320px; overflow: hidden; position: relative;
+  }
+  .case-img img { width: 100%; height: 100%; object-fit: cover; display: block; position: absolute; inset: 0; }
+
+  /* ========== ENTREGA / LISTA POR FORNECEDOR ========== */
+  .list-card {
+    border-radius: var(--radius); background: var(--white); border: 1px solid var(--border);
+    padding: 22px; box-shadow: var(--shadow-sm);
+    transition: transform .25s var(--ease), box-shadow .25s var(--ease);
+  }
+  .list-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+  .list-card h3 { display: flex; align-items: center; gap: 10px; font-size: 15px; margin-bottom: 14px; }
+  .list-card h3 .tag { width: 10px; height: 10px; border-radius: 50%; }
+  .list-card.a h3 .tag { background: var(--blue); }
+  .list-card.b h3 .tag { background: var(--green); }
+  .list-card.c h3 .tag { background: var(--gold); }
+  .list-card table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .list-card th, .list-card td { padding: 9px 0; text-align: left; border-bottom: 1px dashed var(--border); }
+  .list-card th { font-weight: 600; color: var(--ink-2); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+  .list-card .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .list-card .footer-note { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 13px; color: var(--ink-2); display: flex; justify-content: space-between; }
+  .list-card .footer-note strong { color: var(--ink); }
+
+  /* ========== SEGMENTOS ========== */
+  .seg-card { padding: 24px; border-radius: var(--radius); background: var(--white); border: 1px solid var(--border); transition: transform .25s var(--ease), box-shadow .25s var(--ease), border-color .25s var(--ease); }
+  .seg-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--border-strong); }
+  .seg-card .img {
+    height: 160px; border-radius: 10px; margin-bottom: 16px;
+    background: var(--surface);
+    overflow: hidden; position: relative;
+  }
+  .seg-card .img img { width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform .5s var(--ease); }
+  .seg-card:hover .img img { transform: scale(1.05); }
+
+  /* ========== IA / TECNOLOGIA ========== */
+  .ia-section {
+    background: linear-gradient(180deg, var(--brand) 0%, var(--brand-700) 100%);
+    color: var(--white); border-radius: var(--radius-lg); padding: 64px 56px;
+    margin: 88px 0; position: relative; overflow: hidden;
+  }
+  .ia-section::before {
+    content: ""; position: absolute; inset: 0;
+    background:
+      radial-gradient(360px 220px at 12% 0%, rgba(0,213,64,.14), transparent 70%),
+      radial-gradient(360px 220px at 100% 100%, rgba(6,117,239,.12), transparent 70%);
+    pointer-events: none;
+  }
+  .ia-section .eyebrow { background: rgba(255,255,255,.12); color: var(--white); }
+  .ia-section .eyebrow::before { background: var(--green); }
+  .ia-section h2, .ia-section h3 { color: var(--white); }
+  .ia-section .lead { color: rgba(255,255,255,.85); }
+  .ia-section .ia-card {
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14);
+    border-radius: var(--radius); padding: 24px;
+    transition: transform .25s var(--ease), background .25s var(--ease);
+  }
+  .ia-section .ia-card:hover { transform: translateY(-3px); background: rgba(255,255,255,.1); }
+  .ia-section .ia-card p { color: rgba(255,255,255,.78); font-size: 14px; margin-top: 6px; }
+  .ia-section .ia-note {
+    margin-top: 22px; padding: 16px 22px; border-radius: var(--radius);
+    background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14);
+    font-size: 14px; color: rgba(255,255,255,.88);
+  }
+  .ia-section .ia-note strong { color: var(--green); }
+
+  /* ========== B2B DIFERENCIAL ========== */
+  .why-card .num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; border-radius: 10px;
+    background: var(--green-100); color: var(--green-700); margin-bottom: 14px;
+  }
+
+  /* ========== FAQ ========== */
+  .faq-item {
+    border: 1px solid var(--border); border-radius: var(--radius); margin-top: 12px;
+    background: var(--white); overflow: hidden; transition: box-shadow .2s var(--ease), border-color .2s var(--ease);
+  }
+  .faq-item[open] { border-color: var(--brand); box-shadow: var(--shadow-sm); }
+  .faq-item > summary {
+    list-style: none; cursor: pointer; padding: 20px 24px;
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    font-weight: 600; font-size: 16px; color: var(--ink);
+  }
+  .faq-item > summary::-webkit-details-marker { display: none; }
+  .faq-item > summary::after {
+    content: ""; flex-shrink: 0;
+    width: 26px; height: 26px; border-radius: 50%; background: var(--brand-100); color: var(--brand);
+    display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2303423C' stroke-width='2.5' stroke-linecap='round'><line x1='12' y1='5' x2='12' y2='19'/><line x1='5' y1='12' x2='19' y2='12'/></svg>");
+    background-size: 14px; background-repeat: no-repeat; background-position: center;
+    transition: transform .25s var(--ease), background .25s var(--ease);
+  }
+  .faq-item[open] > summary::after {
+    background-color: var(--brand);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round'><line x1='5' y1='12' x2='19' y2='12'/></svg>");
+  }
+  .faq-item > .faq-body { padding: 0 24px 22px; color: var(--ink-2); font-size: 15px; }
+
+  /* ========== PLANOS ========== */
+  .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; max-width: 1100px; margin: 0 auto; align-items: start; }
+  @media (max-width: 980px) { .plans { grid-template-columns: 1fr; max-width: 500px; } }
+  .plan {
+    background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 32px 28px; position: relative;
+  }
+  .plan.featured {
+    border-color: var(--brand); background: linear-gradient(180deg, var(--brand-50), var(--white));
+    box-shadow: var(--shadow-md);
+  }
+  .plan .ribbon {
+    position: absolute; top: -12px; left: 32px;
+    padding: 6px 12px; border-radius: var(--radius-pill); background: var(--green); color: var(--white);
+    font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  }
+  .plan .price { font-size: 40px; font-weight: 800; color: var(--ink); letter-spacing: -.02em; margin-top: 8px; }
+  .plan .price span { font-size: 16px; font-weight: 500; color: var(--ink-2); }
+  .plan .roi { color: var(--ink-2); font-size: 14px; margin-top: 8px; }
+  .plan .roi strong { color: var(--brand); }
+  .plan ul { list-style: none; padding: 0; margin: 22px 0 0; }
+  .plan ul li {
+    display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; font-size: 14px;
+  }
+  .plan ul li::before {
+    content: ""; flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%; background: var(--green);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>");
+    background-size: 12px; background-position: center; background-repeat: no-repeat; margin-top: 2px;
+  }
+  .plan .btn { margin-top: 22px; display: flex; justify-content: center; width: 100%; }
+
+  /* ========== CTA FINAL ========== */
+  .cta-final {
+    background:
+      radial-gradient(500px 280px at 0% 0%, rgba(0,213,64,.10), transparent 70%),
+      radial-gradient(500px 280px at 100% 100%, rgba(6,117,239,.08), transparent 70%),
+      linear-gradient(180deg, var(--brand) 0%, var(--brand-700) 100%);
+    color: var(--white); border-radius: var(--radius-lg);
+    padding: 64px 32px; text-align: center;
+    margin: 88px 0; position: relative; overflow: hidden;
+  }
+  .cta-final h2 { color: var(--white); max-width: 720px; margin: 0 auto; }
+  .cta-final p { color: rgba(255,255,255,.85); max-width: 560px; margin: 14px auto 0; font-size: 17px; }
+  .cta-final .btn-solid { background: var(--white); color: var(--brand); border-color: var(--white); }
+  .cta-final .btn-solid:hover { background: var(--green); color: var(--white); border-color: var(--green); }
+  .cta-final .micro { color: rgba(255,255,255,.65); font-size: 13px; margin-top: 14px; }
+
+  /* ========== FOOTER ========== */
+  footer { border-top: 1px solid var(--border); padding: 32px 0; }
+  .footer-row { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-size: 13px; color: var(--ink-2); }
+  .footer-row a { color: var(--ink-2); }
+  .footer-row a:hover { color: var(--brand-bright); }
+  .footer-row .logo img { height: 28px; }
+
+  /* ========== UTIL ========== */
+  .hide-mobile { display: inline-flex; }
+  @media (max-width: 720px) {
+    section { padding: 64px 0; }
+    .ia-section, .cta-final { padding: 48px 24px; margin: 48px 0; }
+    .hide-mobile { display: none; }
+    .navlinks { gap: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="wrap nav">
+    <a href="#" class="logo"><img src="../assets/logo.svg" alt="Melhor Orçamento"></a>
+    <nav class="navlinks">
+      <a href="#como" class="hide-mobile">Como funciona</a>
+      <a href="#case" class="hide-mobile">Resultados</a>
+      <a href="#planos" class="hide-mobile">Planos</a>
+      <a href="#">Entrar</a>
+      <a href="#" class="btn btn-solid">Começar grátis</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <h1>Item mais barato por orçamento para você <strong>economizar em cada compra</strong>.</h1>
+      <p class="hero-lead">
+        A IA compara seus orçamentos <strong style="color:var(--brand)">em minutos</strong> e entrega a lista de compra pronta para cada fornecedor.
+      </p>
+      <div class="cta-row">
+        <a href="#" class="btn btn-solid btn-lg">Começar grátis →</a>
+        <a href="#planos" class="btn btn-ghost">ou ver planos</a>
+      </div>
+      <p class="note">Grátis · sem cartão · primeiro orçamento pronto em minutos.</p>
+      <div class="trust-row">
+        <span class="pill green"><span class="dot"></span> + R$ 140 mil economizados em 1 compra</span>
+        <span class="pill blue"><span class="dot"></span> 98% de assertividade no matching</span>
+        <span class="pill gold"><span class="dot"></span> Dias de trabalho → minutos</span>
+      </div>
+    </div>
+
+    <!-- Cena 3D do hero -->
+    <div class="hero-scene" id="heroScene">
+      <div class="hero-stage">
+
+        <!-- Partículas mágicas -->
+        <div class="particles">
+          <span class="particle b sm" style="left:8%; top:20%; --mx:40px; --my:-60px; --mz:120px; animation-delay:0s"></span>
+          <span class="particle g" style="left:25%; top:10%; --mx:-30px; --my:50px; --mz:80px; animation-delay:1.5s"></span>
+          <span class="particle y sm" style="left:50%; top:5%; --mx:60px; --my:40px; --mz:100px; animation-delay:3s"></span>
+          <span class="particle b" style="left:75%; top:30%; --mx:-50px; --my:-30px; --mz:140px; animation-delay:4.5s"></span>
+          <span class="particle g sm" style="left:88%; top:50%; --mx:-40px; --my:60px; --mz:60px; animation-delay:6s"></span>
+          <span class="particle y lg" style="left:15%; top:70%; --mx:50px; --my:-40px; --mz:90px; animation-delay:2s"></span>
+          <span class="particle b sm" style="left:60%; top:85%; --mx:-60px; --my:-50px; --mz:110px; animation-delay:5s"></span>
+          <span class="particle g lg" style="left:92%; top:80%; --mx:-70px; --my:-60px; --mz:120px; animation-delay:7.5s"></span>
+          <span class="particle y" style="left:38%; top:65%; --mx:30px; --my:50px; --mz:70px; animation-delay:3.5s"></span>
+          <span class="particle b lg" style="left:5%; top:48%; --mx:80px; --my:30px; --mz:130px; animation-delay:8s"></span>
+        </div>
+
+        <!-- Linhas decorativas em movimento -->
+        <svg class="deco" viewBox="0 0 540 560" fill="none">
+          <path d="M40,460 Q150,360 270,420 T520,300" stroke="var(--brand-bright)" stroke-width="1.5"/>
+          <path d="M30,120 Q200,180 320,80 T520,160" stroke="var(--blue)" stroke-width="1"/>
+          <path d="M60,520 Q220,500 360,540" stroke="var(--green)" stroke-width="1"/>
+        </svg>
+
+        <!-- Folha A (azul, fundo) -->
+        <div class="p3d pa p-a">
+          <div class="p3d-head">Orçamento · Forn. A</div>
+          <div class="p3d-row ra">Cimento 50kg · R$ 38</div>
+          <div class="p3d-row">Vergalhão 10mm · R$ 24</div>
+          <div class="p3d-row">Tubo PVC 100mm · R$ 34</div>
+        </div>
+
+        <!-- Folha B (verde, meio) -->
+        <div class="p3d pb p-b">
+          <div class="p3d-head">Orçamento · Forn. B</div>
+          <div class="p3d-row">Cimento 50kg · R$ 41</div>
+          <div class="p3d-row">Vergalhão 10mm · R$ 27</div>
+          <div class="p3d-row rb">Tubo PVC 100mm · R$ 29</div>
+        </div>
+
+        <!-- Folha C (dourada, frente) -->
+        <div class="p3d pc p-c">
+          <div class="p3d-head">Orçamento · Forn. C</div>
+          <div class="p3d-row">Cimento 50kg · R$ 45</div>
+          <div class="p3d-row rc">Vergalhão 10mm · R$ 21</div>
+          <div class="p3d-row">Tubo PVC 100mm · R$ 33</div>
+        </div>
+
+        <!-- Chips flutuantes -->
+        <div class="chip ca">Cimento 50kg · R$ 38</div>
+        <div class="chip cb">Tubo PVC 100mm · R$ 29</div>
+        <div class="chip cc">Vergalhão 10mm · R$ 21</div>
+
+        <!-- Folha FINAL (cesta de menor custo) -->
+        <div class="p3d pf p-f">
+          <div class="pf-head">
+            <span>Melhor orçamento</span>
+            <span class="pf-eco">25% off</span>
+          </div>
+          <div class="pf-item fa"><span class="l">Cimento 50kg · Forn. A</span><span class="pr">R$ 38</span></div>
+          <div class="pf-item fb"><span class="l">Tubo PVC 100mm · Forn. B</span><span class="pr">R$ 29</span></div>
+          <div class="pf-item fc"><span class="l">Vergalhão 10mm · Forn. C</span><span class="pr">R$ 21</span></div>
+
+          <div class="pf-savings">
+            <div class="pf-row"><span>De: <span class="before">R$ 24.320</span></span><span>por:</span></div>
+            <div class="pf-total">R$ 18.240</div>
+            <div class="pf-econ">Economia de R$ 6.080</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROVA SOCIAL ============ -->
+<section class="tight">
+  <div class="wrap center">
+    <p class="muted" style="font-size:12px; letter-spacing:.16em; text-transform:uppercase; margin-bottom:18px;">Empresas que compram melhor com a ferramenta</p>
+    <div class="logos">
+      <div class="logo-slot">
+        <img src="../assets/clients/gsc-incorporadora.png" alt="GSC Incorporadora"
+             onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'GSC INCORPORADORA'}))">
+      </div>
+      <div class="logo-slot">
+        <img src="../assets/clients/base-norte.png" alt="Base Norte Hub Imobiliário"
+             onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'BASE NORTE'}))">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VÍDEO DEMO ============ -->
+<section id="demo" class="surface">
+  <div class="wrap center">
+    <span class="eyebrow">Veja em 60 segundos</span>
+    <h2 style="margin-top:18px;">Do orçamento bagunçado à compra de menor custo</h2>
+    <p class="lead" style="margin: 14px auto 30px;">Assista como a ferramenta compara tudo e devolve a lista pronta por fornecedor.</p>
+    <div style="position:relative; max-width:880px; margin:0 auto; aspect-ratio:16/9; border-radius:var(--radius-lg); background:linear-gradient(135deg, var(--brand-50), var(--green-100)); border:1px solid var(--border); box-shadow:var(--shadow-lg); display:flex; align-items:center; justify-content:center; color:var(--brand); font-weight:600;">
+      <div style="display:flex; flex-direction:column; align-items:center; gap:12px;">
+        <div style="width:78px; height:78px; border-radius:50%; background:var(--brand); display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow-lg);">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <span style="font-size:14px; letter-spacing:.08em; text-transform:uppercase;">Placeholder · vídeo demo (0:60)</span>
+      </div>
+    </div>
+    <div style="margin-top:28px;">
+      <a href="#" class="btn btn-solid btn-lg">Começar grátis →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MÉTRICAS ============ -->
+<section>
+  <div class="wrap">
+    <div class="row">
+      <div class="col"><div class="metric">
+        <h3 class="big">Minutos, não dias</h3>
+        <p>O que o seu time de compras leva horas (ou dias) para cruzar numa planilha fica pronto em <strong>minutos</strong>.</p>
+      </div></div>
+      <div class="col"><div class="metric">
+        <h3 class="big">Economia real em cada compra</h3>
+        <p>Empresas costumam economizar de 10% a 30% — e às vezes muito mais — comprando cada item do fornecedor mais barato, em vez de fechar tudo com um só.</p>
+      </div></div>
+      <div class="col"><div class="metric accent">
+        <h3 class="big" style="color:var(--green);">+ R$ 140 mil</h3>
+        <p>Economizados em uma compra por uma construtora. <a href="#case">Ver o case →</a></p>
+      </div></div>
+    </div>
+
+    <div class="feat-row">
+      <div class="feat">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        Menor custo item a item
+      </div>
+      <div class="feat">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        Frete embutido no custo total
+      </div>
+      <div class="feat">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Lote mínimo de distribuidora
+      </div>
+      <div class="feat">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Exporta PDF / CSV / XLSX
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMO FUNCIONA ============ -->
+<section id="como" class="surface">
+  <div class="wrap">
+    <span class="eyebrow">Como funciona</span>
+    <h2 style="margin-top:18px;">Do orçamento à lista de compra em 3 passos</h2>
+    <div class="row" style="margin-top:108px;">
+      <div class="col"><div class="step">
+        <span class="num">01</span>
+        <h3>Suba os orçamentos</h3>
+        <p class="muted" style="margin-top:8px;">Adicione os orçamentos de cada fornecedor (PDF, planilha ou foto) ou uma lista de compras. A IA extrai os itens automaticamente.</p>
+        <div class="icon-box">
+          <!-- Icon 1: 3 folhas + upload -->
+          <svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <filter id="i1ds" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="3" stdDeviation="2.5" flood-color="#03423C" flood-opacity="0.22"/>
+              </filter>
+              <linearGradient id="i1p" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#f3f5f4"/>
+              </linearGradient>
+              <linearGradient id="i1a" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#00786F"/><stop offset="1" stop-color="#03423C"/>
+              </linearGradient>
+            </defs>
+            <g filter="url(#i1ds)">
+              <g transform="translate(20 62) rotate(-14)">
+                <rect width="50" height="62" rx="7" fill="url(#i1p)"/>
+                <rect width="50" height="8" rx="3" fill="#0675EF"/>
+                <rect x="8" y="20" width="22" height="3" rx="1.5" fill="#d4dcdb"/>
+                <rect x="8" y="28" width="34" height="3" rx="1.5" fill="#d4dcdb"/>
+                <rect x="8" y="36" width="28" height="3" rx="1.5" fill="#d4dcdb"/>
+              </g>
+              <g transform="translate(45 56)">
+                <rect width="50" height="62" rx="7" fill="url(#i1p)"/>
+                <rect width="50" height="8" rx="3" fill="#00D540"/>
+                <rect x="8" y="20" width="22" height="3" rx="1.5" fill="#d4dcdb"/>
+                <rect x="8" y="28" width="34" height="3" rx="1.5" fill="#d4dcdb"/>
+                <rect x="8" y="36" width="28" height="3" rx="1.5" fill="#d4dcdb"/>
+              </g>
+              <g transform="translate(70 64) rotate(12)">
+                <rect width="50" height="62" rx="7" fill="url(#i1p)"/>
+                <rect width="50" height="8" rx="3" fill="#CC8E06"/>
+                <rect x="8" y="20" width="22" height="3" rx="1.5" fill="#d4dcdb"/>
+                <rect x="8" y="28" width="34" height="3" rx="1.5" fill="#d4dcdb"/>
+                <rect x="8" y="36" width="28" height="3" rx="1.5" fill="#d4dcdb"/>
+              </g>
+            </g>
+            <g transform="translate(70 28)" filter="url(#i1ds)">
+              <circle r="20" fill="url(#i1a)"/>
+              <path d="M-8 4 L0 -8 L8 4 M0 -8 L0 10" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </g>
+          </svg>
+        </div>
+      </div></div>
+      <div class="col"><div class="step">
+        <span class="num">02</span>
+        <h3>Compare</h3>
+        <p class="muted" style="margin-top:8px;">Agrupamos itens equivalentes entre fornecedores — mesmo escritos de formas diferentes — com <strong style="color:var(--brand)">98% de assertividade</strong>.</p>
+        <div class="icon-box">
+          <!-- Icon 2: documento + lupa + highlight verde -->
+          <svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <filter id="i2ds" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="3" stdDeviation="2.5" flood-color="#03423C" flood-opacity="0.22"/>
+              </filter>
+              <linearGradient id="i2p" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#f3f5f4"/>
+              </linearGradient>
+              <linearGradient id="i2lens" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#CC8E06"/><stop offset="1" stop-color="#8a5e04"/>
+              </linearGradient>
+              <radialGradient id="i2glass" cx="0.3" cy="0.3" r="0.8">
+                <stop offset="0" stop-color="#ffffff" stop-opacity="0.85"/>
+                <stop offset="1" stop-color="#0675EF" stop-opacity="0.18"/>
+              </radialGradient>
+            </defs>
+            <g filter="url(#i2ds)">
+              <g transform="translate(24 22)">
+                <rect width="76" height="94" rx="9" fill="url(#i2p)"/>
+                <rect width="76" height="9" rx="4" fill="#03423C"/>
+                <rect x="10" y="20" width="48" height="4" rx="2" fill="#d4dcdb"/>
+                <rect x="10" y="29" width="56" height="4" rx="2" fill="#d4dcdb"/>
+                <!-- highlighted row -->
+                <rect x="5" y="41" width="66" height="12" rx="4" fill="#E0FAEA"/>
+                <rect x="10" y="45" width="40" height="4" rx="2" fill="#00A832"/>
+                <circle cx="62" cy="47" r="3.5" fill="#00D540"/>
+                <rect x="10" y="62" width="46" height="4" rx="2" fill="#d4dcdb"/>
+                <rect x="10" y="71" width="56" height="4" rx="2" fill="#d4dcdb"/>
+                <rect x="10" y="80" width="40" height="4" rx="2" fill="#d4dcdb"/>
+              </g>
+            </g>
+            <!-- Magnifying glass -->
+            <g transform="translate(96 96)" filter="url(#i2ds)">
+              <circle r="24" fill="url(#i2glass)" stroke="url(#i2lens)" stroke-width="6"/>
+              <line x1="16" y1="16" x2="32" y2="32" stroke="url(#i2lens)" stroke-width="8" stroke-linecap="round"/>
+              <circle r="18" fill="none" stroke="#0675EF" stroke-width="2" opacity="0.45"/>
+            </g>
+          </svg>
+        </div>
+      </div></div>
+      <div class="col"><div class="step">
+        <span class="num">03</span>
+        <h3>Compre pelo menor custo</h3>
+        <p class="muted" style="margin-top:8px;">Veja a economia real e receba <strong>uma lista de compras nova para cada fornecedor</strong> — com exatamente o que comprar em cada um. É só enviar.</p>
+        <div class="icon-box">
+          <!-- Icon 3: folha final + check verde + savings -->
+          <svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <filter id="i3ds" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="3" stdDeviation="2.5" flood-color="#03423C" flood-opacity="0.22"/>
+              </filter>
+              <linearGradient id="i3p" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#f3f5f4"/>
+              </linearGradient>
+              <linearGradient id="i3stripe" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#0675EF"/>
+                <stop offset="0.5" stop-color="#00D540"/>
+                <stop offset="1" stop-color="#CC8E06"/>
+              </linearGradient>
+              <linearGradient id="i3check" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#00D540"/><stop offset="1" stop-color="#00A832"/>
+              </linearGradient>
+            </defs>
+            <g filter="url(#i3ds)">
+              <g transform="translate(24 22)">
+                <rect width="76" height="94" rx="9" fill="url(#i3p)"/>
+                <rect width="76" height="9" rx="4" fill="url(#i3stripe)"/>
+                <circle cx="14" cy="28" r="3.5" fill="#0675EF"/>
+                <rect x="22" y="26" width="40" height="4" rx="2" fill="#d4dcdb"/>
+                <circle cx="14" cy="44" r="3.5" fill="#00D540"/>
+                <rect x="22" y="42" width="48" height="4" rx="2" fill="#d4dcdb"/>
+                <circle cx="14" cy="60" r="3.5" fill="#CC8E06"/>
+                <rect x="22" y="58" width="36" height="4" rx="2" fill="#d4dcdb"/>
+                <line x1="8" y1="72" x2="68" y2="72" stroke="#d4dcdb" stroke-width="1" stroke-dasharray="3 3"/>
+                <rect x="8" y="80" width="32" height="6" rx="2" fill="#03423C"/>
+                <rect x="48" y="80" width="20" height="6" rx="2" fill="#00786F"/>
+              </g>
+            </g>
+            <!-- Big check badge -->
+            <g transform="translate(105 32)" filter="url(#i3ds)">
+              <circle r="22" fill="url(#i3check)"/>
+              <path d="M-9 0 L-3 6 L9 -6" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </g>
+          </svg>
+        </div>
+      </div></div>
+    </div>
+    <div class="control-note">
+      <strong>Você no controle:</strong> quer ajustar algo? Edite qualquer item e a recomendação se recalcula na hora — com a IA trabalhando junto.
+    </div>
+  </div>
+</section>
+
+<!-- ============ CASE ============ -->
+<section id="case">
+  <div class="wrap">
+    <span class="eyebrow">Case real</span>
+    <div class="case-grid" style="margin-top:24px;">
+      <div>
+        <h2>Construtora economizou + R$ 140 mil em uma única compra</h2>
+        <p class="lead" style="margin-top:16px;">
+          Numa compra grande para uma obra de grande porte, uma construtora subiu os orçamentos de
+          vários fornecedores na ferramenta. Em vez de passar <strong>dias</strong> cruzando planilhas,
+          teve a comparação completa <strong>em minutos</strong>.
+        </p>
+        <p class="muted" style="margin-top:14px;">
+          O resultado: a compra mista — comprando cada item de quem estava mais barato — gerou uma
+          economia de <strong style="color:var(--green-700)">mais de R$ 140 mil</strong> frente a
+          fechar tudo com um fornecedor só.
+        </p>
+
+        <div class="quote">
+          <p>Levávamos dias cruzando cotações numa planilha. Agora sai em minutos e ainda achamos economia que passava batido. Numa compra grande, foram mais de R$ 140 mil.</p>
+          <div class="author">
+            <strong>Gérlison S. C., CEO</strong> · Construtora e Incorporadora GSC
+            <img src="../assets/clients/gsc-incorporadora.png" alt="GSC Incorporadora" style="height:22px; width:auto; object-fit:contain;">
+          </div>
+        </div>
+
+        <ul class="check-list">
+          <li>Comparação que levaria dias, feita em minutos</li>
+          <li>+ R$ 140.000 de economia em uma compra</li>
+          <li>Lista de compra separada e pronta por fornecedor</li>
+        </ul>
+      </div>
+      <div class="case-img">
+        <img src="../assets/clients/gerlison-ceo-gsc.png" alt="Gérlison S. C., CEO da GSC Construtora e Incorporadora">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ENTREGA / LISTA POR FORNECEDOR ============ -->
+<section id="entrega" class="surface">
+  <div class="wrap">
+    <h2 style="font-size:38px;">O que te entregamos?</h2>
+    <p class="lead" style="margin-top:14px;">
+      <strong style="color:var(--ink);">Uma lista de compras pronta para cada fornecedor.</strong>
+      Com a quantidade exata do que comprar em cada um para chegar no menor custo total. Sem
+      recortar planilha, sem refazer pedido na mão — é só enviar.
+    </p>
+
+    <div class="row" style="margin-top:32px;">
+      <div class="col"><div class="list-card a">
+        <h3><span class="tag"></span> Lista · Fornecedor A</h3>
+        <table>
+          <tr><th>Item</th><th class="num">Qtd</th></tr>
+          <tr><td>Cimento CP-II 50kg</td><td class="num">120</td></tr>
+          <tr><td>Vergalhão 10mm</td><td class="num">80</td></tr>
+          <tr><td>Brita 1 (m³)</td><td class="num">30</td></tr>
+        </table>
+        <div class="footer-note"><span>10 itens</span><strong>R$ 8.100</strong></div>
+      </div></div>
+      <div class="col"><div class="list-card b">
+        <h3><span class="tag"></span> Lista · Fornecedor B</h3>
+        <table>
+          <tr><th>Item</th><th class="num">Qtd</th></tr>
+          <tr><td>Tubo PVC 100mm</td><td class="num">60</td></tr>
+          <tr><td>Conexões (kit)</td><td class="num">15</td></tr>
+        </table>
+        <div class="footer-note"><span>5 itens</span><strong>R$ 3.940</strong></div>
+      </div></div>
+      <div class="col"><div class="list-card c">
+        <h3><span class="tag"></span> Lista · Fornecedor C</h3>
+        <table>
+          <tr><th>Item</th><th class="num">Qtd</th></tr>
+          <tr><td>Cabo flexível 2,5mm</td><td class="num">500</td></tr>
+          <tr><td>Disjuntor 20A</td><td class="num">40</td></tr>
+        </table>
+        <div class="footer-note"><span>9 itens</span><strong>R$ 6.200</strong></div>
+      </div></div>
+    </div>
+    <p class="muted" style="margin-top:18px; font-size:13px;">Exporta em PDF / CSV / XLSX — uma lista por fornecedor, prontas para enviar.</p>
+  </div>
+</section>
+
+<!-- ============ PARA QUEM É ============ -->
+<section id="segmentos">
+  <div class="wrap">
+    <span class="eyebrow">Para quem é</span>
+    <h2 style="margin-top:18px;">Pensado para quem compra muito, de muitos fornecedores</h2>
+    <p class="lead" style="margin-top:14px;">
+      Quanto mais itens, mais cotações e mais fornecedores envolvidos, maior a economia que a comparação automática encontra.
+    </p>
+
+    <div class="row" style="margin-top:36px;">
+      <div class="col"><div class="seg-card">
+        <div class="img"><img src="../assets/segments/construtoras.jpg" alt="Canteiro de obras"></div>
+        <h3>Construtoras &amp; obras</h3>
+        <p class="muted" style="margin-top:8px; font-size:14px;">Cimento, aço, hidráulica e elétrica em várias distribuidoras — a cesta mais barata por etapa da obra, já com frete e lote mínimo.</p>
+      </div></div>
+      <div class="col"><div class="seg-card">
+        <div class="img"><img src="../assets/segments/industrias.jpg" alt="Indústria e fábrica"></div>
+        <h3>Indústrias &amp; fábricas</h3>
+        <p class="muted" style="margin-top:8px; font-size:14px;">Compra recorrente de matéria-prima, insumos e MRO. Centenas de itens de almoxarifado cotados todo mês.</p>
+      </div></div>
+      <div class="col"><div class="seg-card">
+        <div class="img"><img src="../assets/segments/restaurantes.jpg" alt="Cozinha profissional de restaurante"></div>
+        <h3>Restaurantes &amp; food service</h3>
+        <p class="muted" style="margin-top:8px; font-size:14px;">Insumos com preço que muda toda semana. Bate as cotações dos distribuidores e mostra onde comprar cada item mais barato.</p>
+      </div></div>
+      <div class="col"><div class="seg-card">
+        <div class="img"><img src="../assets/segments/varejo.jpg" alt="Varejo e revenda — depósito com prateleiras"></div>
+        <h3>Varejo &amp; revenda</h3>
+        <p class="muted" style="margin-top:8px; font-size:14px;">Lojas e mercados que compram para revender. A comparação por item protege a margem em compras de alto volume.</p>
+      </div></div>
+    </div>
+    <p class="muted" style="margin-top:22px; font-size:14px; text-align:center;">
+      Também usado por clínicas e hospitais, facilities, agronegócio, escolas e hotéis. Se a sua empresa compra <strong style="color:var(--ink)">vários itens, de vários fornecedores, com frequência</strong>, o Melhor Orçamento serve.
+    </p>
+  </div>
+</section>
+
+<!-- ============ POR QUE B2B ============ -->
+<section class="surface">
+  <div class="wrap">
+    <span class="eyebrow">Por que compra de empresa é diferente</span>
+    <h2 style="margin-top:18px;">Não é uma lista de supermercado</h2>
+    <div class="row" style="margin-top:36px;">
+      <div class="col"><div class="card hover why-card">
+        <div class="num"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        <h3>Mesmo item, nomes diferentes</h3>
+        <p class="muted" style="margin-top:8px;">Cada fornecedor descreve o produto do seu jeito. A IA reconhece equivalências que uma comparação manual não pega.</p>
+      </div></div>
+      <div class="col"><div class="card hover why-card">
+        <div class="num"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+        <h3>Frete e lote mínimo contam</h3>
+        <p class="muted" style="margin-top:8px;">O item mais barato nem sempre vence depois do frete e do pedido mínimo. Entra tudo no cálculo.</p>
+      </div></div>
+      <div class="col"><div class="card hover why-card">
+        <div class="num"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <h3>Tempo é dinheiro</h3>
+        <p class="muted" style="margin-top:8px;">Dezenas ou centenas de itens em vários fornecedores tornam a comparação manual lenta e cara. Automatizar devolve horas do seu time — e ainda acha a economia que o olho não pega.</p>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ IA / TECNOLOGIA ============ -->
+<section>
+  <div class="wrap">
+    <div class="ia-section">
+      <span class="eyebrow">▣ Tecnologia · IA</span>
+      <h2 style="margin-top:18px; max-width:760px;">Uma IA de compras que fica mais inteligente a cada cotação.</h2>
+      <p class="lead" style="margin-top:14px;">
+        Não é planilha automatizada. É uma <strong style="color:var(--white)">inteligência artificial treinada para o jeito que empresas compram</strong> — e que evolui toda vez que processa um novo orçamento.
+      </p>
+
+      <div class="row" style="margin-top:32px;">
+        <div class="col"><div class="ia-card">
+          <h3>Entende o seu mercado</h3>
+          <p>Lê PDFs, planilhas e fotos. Reconhece marcas, unidades de medida e códigos de fornecedor do seu setor — não só palavras soltas.</p>
+        </div></div>
+        <div class="col"><div class="ia-card">
+          <h3>Aprende a cada compra</h3>
+          <p>Cada orçamento processado refina o modelo: matchings mais precisos, menos correções manuais, decisões cada vez melhores.</p>
+        </div></div>
+        <div class="col"><div class="ia-card">
+          <h3><strong style="color:var(--green);">98%</strong> de assertividade — e subindo</h3>
+          <p>O matching hoje acerta 98% dos itens equivalentes. E o número sobe a cada release. Você ganha um produto melhor todo mês, sem mudar nada.</p>
+        </div></div>
+      </div>
+
+      <div class="ia-note">
+        <strong>Humano no comando.</strong> Por mais inteligente que a IA fique, a decisão final é sempre sua — qualquer item pode ser editado e a recomendação se recalcula na hora.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="faq" class="surface">
+  <div class="wrap" style="max-width:820px;">
+    <span class="eyebrow">Perguntas frequentes</span>
+    <h2 style="margin-top:18px;">Tira-dúvidas antes de começar</h2>
+
+    <details class="faq-item" open>
+      <summary>Meus orçamentos ficam seguros?</summary>
+      <div class="faq-body"><p>Seus dados são privados e usados apenas para gerar a sua comparação. Não compartilhamos com fornecedores nem com terceiros.</p></div>
+    </details>
+    <details class="faq-item">
+      <summary>E se a IA agrupar um item errado?</summary>
+      <div class="faq-body"><p>Você revisa e edita qualquer item — a recomendação recalcula na hora. O matching tem 98% de assertividade e você fica no controle.</p></div>
+    </details>
+    <details class="faq-item">
+      <summary>Que formatos posso subir?</summary>
+      <div class="faq-body"><p>PDF, planilha (CSV/XLSX) ou foto do orçamento. A IA extrai os itens automaticamente.</p></div>
+    </details>
+    <details class="faq-item">
+      <summary>Preciso de cartão para testar?</summary>
+      <div class="faq-body"><p>Não. O trial é grátis, sem cartão: 1 projeto, 2 fornecedores, 2 orçamentos.</p></div>
+    </details>
+  </div>
+</section>
+
+<!-- ============ PLANOS ============ -->
+<section id="planos">
+  <div class="wrap">
+    <div class="center" style="margin-bottom:40px;">
+      <span class="eyebrow">Planos</span>
+      <h2 style="margin-top:18px;">Comece grátis. Escolha como quer crescer.</h2>
+      <p class="lead" style="margin: 14px auto 0;">7 dias grátis nos planos Start e Pro. Sem cartão para começar.</p>
+    </div>
+    <div class="plans">
+
+      <!-- START -->
+      <div class="plan">
+        <h3 style="font-size:13px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-2);">Start</h3>
+        <div class="price">R$ 97 <span>/mês</span></div>
+        <p class="roi">Para começar a economizar em cada cotação.</p>
+        <ul>
+          <li>1 usuário</li>
+          <li>5 projetos por mês</li>
+          <li>5 arquivos por projeto · até 500 KB cada</li>
+          <li>Páginas por PDF ilimitadas</li>
+          <li>Importa lista de compras e orçamentos em PDF</li>
+          <li>Exporta PDF por fornecedor</li>
+        </ul>
+        <a href="#" class="btn">Começar 7 dias grátis</a>
+        <p class="muted" style="text-align:center; font-size:12px; margin-top:10px;">Sem cartão.</p>
+      </div>
+
+      <!-- PRO (featured) -->
+      <div class="plan featured">
+        <span class="ribbon">Mais popular</span>
+        <h3 style="font-size:13px; letter-spacing:.12em; text-transform:uppercase; color:var(--brand);">Pro</h3>
+        <div class="price">R$ 197 <span>/mês</span></div>
+        <p class="roi"><strong>Se paga na primeira compra.</strong> Uma economia de 1% num pedido de R$ 20 mil já cobre o mês.</p>
+        <ul>
+          <li>5 usuários</li>
+          <li>30 projetos por mês</li>
+          <li>Arquivos ilimitados por projeto · até 10 MB cada</li>
+          <li>Páginas por PDF ilimitadas</li>
+          <li>Importa PDF, texto, fotos e áudio</li>
+          <li>Exporta PDF / CSV / XLSX — geral, por fornecedor e por item (OCR)</li>
+        </ul>
+        <a href="#" class="btn btn-solid">Começar 7 dias grátis</a>
+        <p class="muted" style="text-align:center; font-size:12px; margin-top:10px;">Sem cartão · cancele quando quiser.</p>
+      </div>
+
+      <!-- ENTERPRISE -->
+      <div class="plan">
+        <h3 style="font-size:13px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-2);">Enterprise</h3>
+        <div class="price" style="font-size:28px;">Sob demanda</div>
+        <p class="roi">Para grandes volumes e integrações personalizadas.</p>
+        <ul>
+          <li>Tudo do plano Pro</li>
+          <li>Volumes e usuários personalizados</li>
+          <li>Integrações sob demanda</li>
+          <li>Exportações ampliadas</li>
+          <li>Atendimento prioritário</li>
+        </ul>
+        <a href="#" class="btn">Falar com vendas</a>
+        <p class="muted" style="text-align:center; font-size:12px; margin-top:10px;">Montamos uma proposta para você.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA FINAL ============ -->
+<section>
+  <div class="wrap">
+    <div class="cta-final">
+      <h2>Pare de cotar na mão. Economize tempo e dinheiro.</h2>
+      <p>Suba seus orçamentos e, em minutos, receba a economia e a lista de compra pronta para cada fornecedor.</p>
+      <div style="margin-top:28px;">
+        <a href="#" class="btn btn-solid btn-lg">Começar grátis →</a>
+      </div>
+      <p class="micro">Grátis · sem cartão · cancele quando quiser.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap footer-row">
+    <a href="#" class="logo"><img src="../assets/logo.svg" alt="Melhor Orçamento"></a>
+    <div>
+      <a href="#">Política de Privacidade</a> · <a href="#">Termos de Uso</a>
+    </div>
+    <div>© 2026 Melhor Orçamento</div>
+  </div>
+</footer>
+
+<script>
+  // Header glass on scroll
+  (function () {
+    const header = document.querySelector('header');
+    const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 20);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  })();
+
+  // Hero 3D parallax — mouse rastreado no viewport inteiro + lerp para suavidade
+  (function () {
+    const scene = document.getElementById('heroScene');
+    if (!scene) return;
+    const stage = scene.querySelector('.hero-stage');
+    if (!stage) return;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (matchMedia('(hover: none)').matches) return;
+
+    let targetX = 0, targetY = 0;
+    let currentX = 0, currentY = 0;
+
+    // mouse no viewport -> normalizado entre -0.5 e 0.5
+    window.addEventListener('mousemove', (e) => {
+      targetX = ((e.clientX / window.innerWidth) - 0.5) * 14;   // rotateY
+      targetY = -((e.clientY / window.innerHeight) - 0.5) * 10; // rotateX
+    }, { passive: true });
+
+    // lerp loop @60fps para movimento contínuo e sem pulos
+    const tick = () => {
+      currentX += (targetX - currentX) * 0.08;
+      currentY += (targetY - currentY) * 0.08;
+      stage.style.setProperty('--rx', currentX.toFixed(2) + 'deg');
+      stage.style.setProperty('--ry', currentY.toFixed(2) + 'deg');
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  })();
+</script>
+</body>
+</html>
