@@ -829,13 +829,15 @@
     <span class="eyebrow">Veja em 60 segundos</span>
     <h2 style="margin-top:18px;">Do orçamento bagunçado à compra de menor custo</h2>
     <p class="lead" style="margin: 14px auto 30px;">Assista como a ferramenta compara tudo e devolve a lista pronta por fornecedor.</p>
-    <div style="position:relative; max-width:880px; margin:0 auto; aspect-ratio:16/9; border-radius:var(--radius-lg); background:linear-gradient(135deg, var(--brand-50), var(--green-100)); border:1px solid var(--border); box-shadow:var(--shadow-lg); display:flex; align-items:center; justify-content:center; color:var(--brand); font-weight:600;">
-      <div style="display:flex; flex-direction:column; align-items:center; gap:12px;">
-        <div style="width:78px; height:78px; border-radius:50%; background:var(--brand); display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow-lg);">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
-        </div>
-        <span style="font-size:14px; letter-spacing:.08em; text-transform:uppercase;">Placeholder · vídeo demo (0:60)</span>
-      </div>
+    <div style="position:relative; max-width:880px; margin:0 auto; background:#000; border:1px solid var(--border); box-shadow:var(--shadow-lg); overflow:hidden;">
+      <video
+        controls
+        preload="metadata"
+        playsinline
+        style="width:100%; height:auto; display:block; aspect-ratio:16/9; object-fit:contain; background:#000;">
+        <source src="../assets/demo.mp4" type="video/mp4">
+        Seu navegador não suporta vídeos HTML5.
+      </video>
     </div>
     <div style="margin-top:28px;">
       <a href="#" class="btn btn-solid btn-lg">Começar grátis →</a>
