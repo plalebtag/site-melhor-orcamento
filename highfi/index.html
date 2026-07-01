@@ -428,14 +428,20 @@
   }
 
   /* ========== LOGOS / PROVA SOCIAL ========== */
-  .logos { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 56px; margin-top: 22px; }
+  .logos {
+    display: flex; justify-content: center; align-items: center; flex-wrap: wrap;
+    gap: 40px 48px; margin: 24px auto 0;
+    max-width: 920px;
+  }
   .logo-slot {
-    height: 64px;
+    flex: 0 0 auto; width: 180px; height: 64px;
     display: flex; align-items: center; justify-content: center;
     font-size: 12px; font-weight: 600; letter-spacing: .14em; color: var(--ink-3);
     filter: grayscale(100%); opacity: .75;
     transition: filter .25s var(--ease), opacity .25s var(--ease);
   }
+  @media (max-width: 780px) { .logos { max-width: 460px; } }
+  @media (max-width: 460px) { .logos { max-width: 220px; } .logo-slot { width: 180px; } }
   .logo-slot:hover { filter: grayscale(0%); opacity: 1; }
   .logo-slot img { max-height: 56px; max-width: 200px; object-fit: contain; }
 
@@ -805,14 +811,13 @@
   <div class="wrap center">
     <p class="muted" style="font-size:12px; letter-spacing:.16em; text-transform:uppercase; margin-bottom:18px;">Empresas que compram melhor com a ferramenta</p>
     <div class="logos">
-      <div class="logo-slot">
-        <img src="../assets/clients/gsc-incorporadora.png" alt="GSC Incorporadora"
-             onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'GSC INCORPORADORA'}))">
-      </div>
-      <div class="logo-slot">
-        <img src="../assets/clients/base-norte.png" alt="Base Norte Hub Imobiliário"
-             onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'BASE NORTE'}))">
-      </div>
+      <div class="logo-slot"><img src="../assets/clients/gsc-incorporadora.png" alt="GSC Incorporadora"></div>
+      <div class="logo-slot"><img src="../assets/clients/base-norte.png" alt="Base Norte Hub Imobiliário"></div>
+      <div class="logo-slot"><img src="../assets/clients/construcastro.png" alt="Construcastro Empreendimentos"></div>
+      <div class="logo-slot"><img src="../assets/clients/jaspe.png" alt="Jaspe Incorporadora"></div>
+      <div class="logo-slot"><img src="../assets/clients/maison-salinas.png" alt="Maison Salinas"></div>
+      <div class="logo-slot"><img src="../assets/clients/para-park.png" alt="Pará Park"></div>
+      <div class="logo-slot"><img src="../assets/clients/terras-de-jade.png" alt="Terras de Jade Condomínio Residencial"></div>
     </div>
   </div>
 </section>

@@ -5,3 +5,8 @@ Thumbs.db
 .idea/
 
 assets/*.pdf
+
+# arquivos originais/rascunhos na raiz
+/Gemini_Generated_Image_*
+/WhatsApp Image *
+/Terras de jade.PNG
